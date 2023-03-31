@@ -35,8 +35,16 @@ for entry in root.find('.//devices/entry/vsys/entry/rulebase/security/rules'):
 
 	# rule format 'to', 'from', 'source', 'destination', 'source-user', 'category', 'application', 'service', 'hip-profiles'
 	for i in ['to', 'from', 'source', 'destination', 'source-user', 'category', 'application', 'service', 'hip-profiles']:
-		temp = [t.text for t in entry.find(i).findall('member')]
-		out.append('\n'.join(temp))
+		temp = []
+		try:
+			for t in entry.find(i).findall('member'):
+				temp.append(t.text)
+			out.append('\n'.join(temp))
+		except AttributeError as e:
+			print("AttributeError noted: %s\nContinuing"%e)
+			continue
+		
+
 
 	#action
 	out.append(entry.find('action').text)
