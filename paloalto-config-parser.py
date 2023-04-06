@@ -26,7 +26,7 @@ root = tree.getroot()
 
 outdata = open(OUTPUTFILE, 'w')
 csvwriter = csv.writer(outdata)
-csvwriter.writerow(['Name', 'To', 'From', 'Source (Alias)','Source (Addresses)', 'Destination (Alias)', 'Destination (Addresses)', 'Source-User', 'Category', 'Application', 'Service', 'Ports', 'Hip-Profiles', 'Action'])
+csvwriter.writerow(['Name', 'Description', 'Action', 'To', 'From', 'Source (Alias)','Source (Addresses)', 'Destination (Alias)', 'Destination (Addresses)', 'Source-User', 'Category', 'Application', 'Service', 'Ports', 'Hip-Profiles'])
 
 #pretty sure that's not how you spell it
 aliases = {'any':'0.0.0.0/0'}
@@ -120,6 +120,12 @@ for entry in root.find('.//devices/entry/vsys/entry/rulebase/security/rules'):
 
 	# name
 	out.append(entry.attrib['name'])
+	try:
+		out.append(entry.find('description').text)
+	except AttributeError:
+		out.append('N/A')
+	#action
+	out.append(entry.find('action').text)
 
 	# rule format 'to', 'from', 'source', 'destination', 'source-user', 'category', 'application', 'service', 'hip-profiles'
 	for i in ['to', 'from', 'source', 'destination', 'source-user', 'category', 'application', 'service', 'hip-profiles']:
@@ -162,8 +168,8 @@ for entry in root.find('.//devices/entry/vsys/entry/rulebase/security/rules'):
 			continue
 		
 
-	#action
-	out.append(entry.find('action').text)
+	
+
 
 	csvwriter.writerow(out)
 
