@@ -63,8 +63,8 @@ for alias in root.find('.//devices/entry/vsys/entry/external-list'):
 		name = alias.attrib['name']
 		url = alias.find('./type/*/url').text.strip()
 		print('Requesting: %s'%url)
-		#resp = requests.get(url)
-		aliases[name] = 'placeholder'#'\n'.join(["%s (%s)"%(i,name) for i in resp.text.strip().split('\n')])
+		resp = requests.get(url)
+		aliases[name] = '\n'.join(["%s (%s)"%(i,name) for i in resp.text.strip().split('\n')])
 	except AttributeError:
 		print("Error discovered for dynamic group %s"%name)
 		continue
